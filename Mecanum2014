@@ -1,0 +1,106 @@
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
+package org.usfirst.frc.team4645.robot;
+
+import edu.wpi.first.wpilibj.SampleRobot;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Timer;
+
+/**
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the SimpleRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the manifest file in the resource
+ * directory.
+ */
+public class Robot extends SampleRobot {
+
+    public Talon frontLeft = new Talon(1);
+    public Talon frontRight = new Talon(2);
+    public Talon backLeft = new Talon(3);
+    public Talon backRight = new Talon(4);
+    public Joystick stick = new Joystick(1);
+    public RobotDrive drive = new RobotDrive(frontLeft, frontRight, backLeft, backRight);
+
+    /**
+     * This function is called once each time the robot enters autonomous mode.
+     */
+    public void autonomous() {
+
+    }
+
+    /**
+     * This function is called once each time the robot enters operator control.
+     */
+    public void operatorControl() {
+
+        drive.setSafetyEnabled(true);
+
+        while (isEnabled()) {
+
+            while (drive.isSafetyEnabled()) {
+
+              // frontLeft.set(stick.getRawAxis(2)+stick.getRawAxis(1));
+              // backLeft.set(stick.getRawAxis(2)-stick.getRawAxis(1));
+              //  frontRight.set(stick.getRawAxis(4)+stick.getRawAxis(3));
+              //  backRight.set(stick.getRawAxis(4)-stick.getRawAxis(3));
+                double tempYMag = (stick.getY()) / 2;
+                double tempTwist = (stick.getTwist()) / 2;
+                
+                boolean check = false;
+                
+                
+                if (stick.getTrigger() == true) {
+  
+                    check = true;
+                  //  tempTwist = 0.0; // /cant use because of motor power imbalance
+                    tempYMag = 0.0; // temporary y magnitude used for strafing when the trigger is pressed.
+                }
+                
+               if (Math.abs(stick.getTwist()) <= 0.1 && Math.abs(stick.getX()) <= 0.1 && Math.abs(tempYMag) <= 0.1 && Math.abs(stick.getY()) <= 0.006){
+                   drive.mecanumDrive_Cartesian(0,0,stick.getX() / 1.5,0);
+               }
+               else
+                drive.mecanumDrive_Cartesian(tempYMag / 1.5, -stick.getTwist() / 1.5, stick.getX() / 1.5, 0.0);
+               //temp y mag MUST BE divided by AT LEAST 1.5. When the magnitude is at full power the drivetrain stutters and rotates when the stick is idle.  
+               System.out.println("Stick: " + tempYMag + ", " + -stick.getTwist() + ", " + stick.getX() + "," + check);
+               //Prints stats to monitor.
+
+            }
+        }
+    }
+
+    private double limit(double pArg) {
+
+        double val = pArg;
+
+        if (val > 1) {
+            val = 1;
+        } else if (val < -1) {
+            val = -1;
+        }
+
+        return val;
+    }
+
+    /**
+     * This function is called once each time the robot enters test mode.
+     */
+    public void test() {
+
+    }
+}
