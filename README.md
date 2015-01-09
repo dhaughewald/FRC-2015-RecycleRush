@@ -2,10 +2,10 @@
 FRC 2015 - Recycle Rush!
 
 Autonomous Programmers:<br>
-Moosa Al-Nimberr
-Dylan Something
+Moosa Al-Nimberr<br>
+Dylan Something<br><br>
 
-Tele-Op Programmers:
-Colleeeeeeeen Masterson
-Greg Mendez-Horatio-Weeks
+Tele-Op Programmers:<br>
+Colleeeeeeeen Masterson<br>
+Greg Mendez-Horatio-Weeks<br>
 Carson Martinez
