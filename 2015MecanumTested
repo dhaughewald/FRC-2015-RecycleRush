@@ -1,0 +1,110 @@
+//The code and documentation are both in their beginning stages and this may or may not be representative of the final
+//version of the code
+package org.usfirst.frc.team4645.robot;
+
+import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.RobotDrive.MotorType;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+/**
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the IterativeRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the manifest file in the resource
+ * directory.
+ */
+public class Robot extends IterativeRobot {
+
+	RobotDrive rb;
+    Joystick joy1;
+    Talon frontLeft, frontRight, backLeft, backRight, test;
+    PowerDistributionPanel pdp ;
+    Gyro gyro;
+    
+    /**
+     * This function is run when the robot is first started up and should be
+     * used for any initialization code.
+     */
+    public void robotInit() {
+    	//talons 0123
+		joy1 = new Joystick(1);
+		frontLeft = new Talon(3);
+		frontRight = new Talon(2);
+		backLeft = new Talon(1);
+		backRight = new Talon(0);
+		
+		test = new Talon(4);
+		gyro = new Gyro(0);
+		
+		rb = new RobotDrive(frontLeft, frontRight, backLeft, backRight);
+		pdp = new PowerDistributionPanel() ;
+		
+    }
+    
+    public void autonomousInit() {
+    	//autonomous 1st draft x scenario #1
+    	
+    }
+
+    public void teleopInit() {
+    	//pdp.clearStickyFaults();
+    	while( isOperatorControl() && isEnabled() )
+    	{
+    		double turnSpeed = (joy1.getRawAxis(3) + 2) * 1.5;
+    		double YSpeed = (joy1.getRawAxis(3) + 2) * 1.5;
+    		double XSpeed = (joy1.getRawAxis(3) + 2) * 1.5;
+    		double tempYMag = (joy1.getY()) / 2;
+    		double tempTwist = (joy1.getTwist()) /2;
+    		
+    		boolean check = false;
+    		
+    		if(joy1.getRawButton(1) == true) {
+    			check = true;
+    			tempYMag = 0.0;
+    		}
+    		if(joy1.getRawButton(2)){turnSpeed = 10000;}
+    		//if(joy1.getRawButton(11)){YSpeed = 10000;}
+    		
+    		if(check && Math.abs(joy1.getTwist()) <= 0.1 && Math.abs(joy1.getX()) <= 0.1 && Math.abs(tempYMag) <= 0.1 && Math.abs(joy1.getY()) <= 0.006)
+    		{
+    			rb.mecanumDrive_Cartesian(0, 0, joy1.getX() / XSpeed, 0);	
+    		}
+    		else{
+    			double angle = gyro.getAngle();
+    			rb.mecanumDrive_Cartesian( tempYMag / YSpeed, -joy1.getTwist()/turnSpeed ,joy1.getX() / XSpeed, -angle); 
+    		}
+    		
+    		//if(joy1.getRawButton(3)){test.set(1.0);}
+    		//if(joy1.getRawButton(4)){test.set(-1.0); }
+    		//if(joy1.getRawButton(2)){test.set(0);}
+    		
+    	}
+    }
+
+    /**
+     * This function is called when the disabled button is hit.
+     * You can use it to reset subsystems before shutting down.
+     */
+    public void disabledInit(){
+    	
+    }
+
+    /**
+     * This function is called periodically during operator control
+     */
+    public void teleopPeriodic() {
+        Scheduler.getInstance().run();
+    }
+    
+    /**
+     * This function is called periodically during test mode
+     */
+    public void testPeriodic() {
+        LiveWindow.run();
+    }
+}
