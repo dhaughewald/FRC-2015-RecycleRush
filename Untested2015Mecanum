@@ -1,0 +1,153 @@
+//The code and documentation are both in their beginning stages and this may or may not be representative of the final
+//version of the code
+package org.usfirst.frc.team4645.robot;
+
+import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
+//import edu.wpi.first.wpilibj.RobotDrive.MotorType;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Ultrasonic; 
+import edu.wpi.first.wpilibj.Encoder;
+/**
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the IterativeRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the manifest file in the resource
+ * directory.
+ */
+public class Robot extends IterativeRobot { 
+
+	RobotDrive rb;
+    Joystick joy1;
+    Talon frontLeft, frontRight, backLeft, backRight, test;
+    PowerDistributionPanel pdp ;
+    Gyro gyro;
+    Encoder encode1;
+    Encoder encode2;
+    Encoder encode3;
+    Encoder encode4;
+    Ultrasonic rangeSense1; 
+    Ultrasonic rangeSense2;
+    
+    /**
+     * This function is run when the robot is first started up and should be
+     * used for any initialization code.
+     */
+    public void robotInit() {
+    	//talons 0123
+		joy1 = new Joystick(1);
+		frontLeft = new Talon(3);
+		frontRight = new Talon(2);
+		backLeft = new Talon(1);
+		backRight = new Talon(0);
+		
+		test = new Talon(4);
+		gyro = new Gyro(0);
+		
+		rb = new RobotDrive(frontLeft, frontRight, backLeft, backRight);
+		pdp = new PowerDistributionPanel() ;
+		
+    }
+    
+    public void autonomousInit() {
+    	//autonomous 1st draft x scenario #1
+    	while(encode1.get() < 00000){ //placeholder * encoder distance 1
+    		rb.mecanumDrive_Cartesian(0, 0, .5, 0); //(Y, Twist, X, 0)
+    	}
+    	while(encode1.get()< 0000){
+    		rb.mecanumDrive_Cartesian(.5, 0, 0, 0);
+    	}
+        while(rangeSense1.getRangeInches() == 30 && rangeSense2.getRangeInches() == 30){
+                if(rangeSense1.getRangeInches() > 30){
+                       frontLeft.set(1);
+                       backLeft.set(1);
+                }
+                else{
+                       frontLeft.set(-1);
+                       backLeft.set(-1);
+                }
+               if(rangeSense2.getRangeInches() > 30){
+                       frontRight.set(1);
+                       backRight.set(1);
+               }
+               else{
+                       frontRight.set(-1);
+                       backRight.set(-1);
+               }
+        }
+    }
+
+    public void teleopInit() {
+    	//pdp.clearStickyFaults();
+    	boolean isStacked = false;
+		double tempYMag = 0;
+		double tempXMag = 0;
+		double tempTwist= 0;
+    	while( isOperatorControl() && isEnabled() )
+    	{
+    		double turnSpeed = (joy1.getRawAxis(3) + 2) * 1.5; //
+    		double YSpeed = (joy1.getRawAxis(3) + 2) * 1.5;    //  general speed controlled by 4th axis
+    		double XSpeed = (joy1.getRawAxis(3) + 2) * 1.5;    //
+    		double angle = gyro.getAngle();
+    		
+    		if(!isStacked){
+    			tempYMag = joy1.getY(); 
+    			tempXMag = joy1.getX();
+    			tempTwist = joy1.getTwist();
+    		}
+    		else{
+    			if(tempYMag < joy1.getY()){tempYMag = tempYMag + 0.0000001;}
+    			else{tempYMag = tempYMag - 0.0000001 ;}
+    			
+    			if(tempXMag < joy1.getX()){tempXMag = tempXMag + 0.00001;}
+    			else{tempXMag = tempXMag - 0.0000001;}
+    			
+    			if(tempTwist < joy1.getTwist()){tempTwist = tempTwist + 0.000001;}
+    			else{tempTwist = tempTwist - 0.000001;}
+    		}
+
+    		if(joy1.getRawButton(1)){tempXMag = 0;}//if trigger, no strafe
+    		if(joy1.getRawButton(2)){tempTwist =0;}//if thumb button, no turn
+    		if(joy1.getRawButton(3)){tempYMag = 0;}//if button 3, no forward
+    		if(joy1.getRawButton(5)){isStacked = false;} //if button 5, its safe to accelerate normally 
+    		if(joy1.getRawButton(6)){isStacked = true;}//if Button 6, we are holding totes and acceleration is dangerous
+    		
+    		
+    		
+    		rb.mecanumDrive_Cartesian( tempYMag/YSpeed, -tempTwist/turnSpeed, tempXMag/XSpeed, -angle); 
+    		
+    		
+    		//if(joy1.getRawButton(3)){test.set(1.0);}
+    		//if(joy1.getRawButton(4)){test.set(-1.0); }
+    		//if(joy1.getRawButton(2)){test.set(0);}
+    		
+    	}
+    }
+
+    /**
+     * This function is called when the disabled button is hit.
+     * You can use it to reset subsystems before shutting down.
+     */
+    public void disabledInit(){
+    	
+    }
+
+    /**
+     * This function is called periodically during operator control
+     */
+    public void teleopPeriodic() {
+        Scheduler.getInstance().run();
+    }
+    
+    /**
+     * This function is called periodically during test mode
+     */
+    public void testPeriodic() {
+        LiveWindow.run();
+    }
+}
