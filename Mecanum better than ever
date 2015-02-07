@@ -1,0 +1,286 @@
+//The code and documentation are both in their beginning stages and this may or may not be representative of the final
+//version of the code
+package org.usfirst.frc.team4645.robot;
+
+import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
+//import edu.wpi.first.wpilibj.RobotDrive.MotorType;
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Ultrasonic; 
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.AnalogOutput;
+import edu.wpi.first.wpilibj.Timer;
+/**
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the IterativeRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the manifest file in the resource
+ * directory.
+ */
+public class Robot extends IterativeRobot { 
+	AnalogOutput custom1;
+	RobotDrive rb;
+    Joystick joy1, joy2 ; 
+    CANTalon frontLeft, frontRight, backLeft, backRight;
+    CANTalon flipMotor;
+    CANTalon noodleMotor1, noodleMotor2;
+    CANTalon liftMotor1, liftMotor2;
+    PowerDistributionPanel pdp ;
+    Gyro gyro;
+    Encoder liftEncode;
+    Encoder flipEncode;
+    Ultrasonic rangeSense1; 
+    Ultrasonic rangeSense2;
+    Compressor compressor;
+    Solenoid jeff;
+    Timer timer;
+    
+    
+    /**
+     * This function is run when the robot is first started up and should be
+     * used for any initialization code.
+     */
+    public void robotInit() {
+    	
+    	//custom1 = new AnalogOutput(17);
+    	
+		joy1 = new Joystick(1);
+		joy2 = new Joystick(2);
+	
+		frontLeft = new CANTalon(5);
+		frontRight = new CANTalon(0);
+		backLeft = new CANTalon(2);
+		backRight = new CANTalon(6);
+		
+		liftMotor1 = new CANTalon(3);
+		liftMotor2 = new CANTalon(7);
+		flipMotor = new CANTalon(1);
+		noodleMotor1 = new CANTalon(8);
+		noodleMotor2 = new CANTalon(4);
+		gyro = new Gyro(0);
+		
+		flipEncode = new Encoder(0, 1);
+		
+		rb = new RobotDrive(frontLeft, frontRight, backLeft, backRight);
+		pdp = new PowerDistributionPanel() ;
+		
+		//pneumatics
+		compressor = new Compressor(0); //create a compressor with the default pcmid.
+    	compressor.setClosedLoopControl(true);
+    	compressor.start();
+    	jeff = new Solenoid(0,0);
+    }
+    
+    public void autonomousInit() {
+    	timer.reset();
+    	timer.start();
+    	while(true){
+    		if(timer.get() > 0.0 && timer.get() < 1.00){
+    			
+    		}
+    		if(timer.get() > 1.0 && timer.get() < 2.00){
+    			
+    		}
+    		if(timer.get() > 2.0 && timer.get() < 3.00){
+    			
+    		}
+    		if(timer.get() > 3.0 && timer.get() < 4.00){
+    			
+    		}
+    		if(timer.get() > 4.0 && timer.get() < 5.00){
+    			
+    		}
+    		if(timer.get() > 5.0 && timer.get() < 6.00){
+    			
+    		}
+    		if(timer.get() > 6.0 && timer.get() < 7.00){
+    			
+    		}
+    		if(timer.get() > 7.0 && timer.get() < 8.00){
+    			
+    		}
+    		if(timer.get() > 8.0 && timer.get() < 9.00){
+    			
+    		}
+    		if(timer.get() > 9.0 && timer.get() < 10.00){
+    			
+    		}
+    		if(timer.get() > 10.0 && timer.get() < 11.00){
+    			
+    		}
+    		if(timer.get() > 11.00 && timer.get() < 12.00){
+    			
+    		}
+    		if(timer.get() > 12.0 && timer.get() < 13.00){
+    			
+    		}
+    		if(timer.get() > 13.0 && timer.get() < 14.00){
+    			
+    		}
+    		if(timer.get() > 14.0 && timer.get() < 15.00){
+    			
+    		}
+    	}
+    	//autonomous 1st draft x scenario #1
+    	//while(encode1.get() < 00000){ //placeholder * encoder distance 1
+    	//	rb.mecanumDrive_Cartesian(0, 0, .5, 0); //(Y, Twist, X, 0)
+    	//}
+    	//while(encode1.get()< 00000){
+    	//	rb.mecanumDrive_Cartesian(.5, 0, 0, 0);
+    	//}
+    	
+        //while(rangeSense1.getRangeInches() != 30 && rangeSense2.getRangeInches() != 30){
+        //       if(rangeSense1.getRangeInches() > 30){
+         //              frontLeft.set(1);
+         //              backLeft.set(1);
+         //       }
+         //       else{
+         //              frontLeft.set(-1);
+         //              backLeft.set(-1);
+         //       }
+         //     if(rangeSense2.getRangeInches() > 30){
+         //              frontRight.set(1);
+         //              backRight.set(1);
+         //      }
+         //      else{
+         //              frontRight.set(-1);
+         //              backRight.set(-1);	
+         //      }
+        //}
+    }
+
+    public void teleopInit() {
+    	//pdp.clearStickyFaults();
+    	
+    	boolean isStacked = false;
+    	boolean flipping = false;
+    	boolean flipClock = true;
+    	int noodling = 1;
+    	int liftLvl = 0;
+    	int desiredLvl = 0; 
+		double tempYMag = 0;
+		double tempXMag = 0;
+		double tempTwist= 0;
+    	while( isOperatorControl() && isEnabled() )
+    	{
+    		
+    		//sets the Speed Constants for each direction based on the 4th axis setting
+    		double turnSpeed = (joy1.getRawAxis(3) + 2) ; //
+    		double YSpeed = (joy1.getRawAxis(3) + 2) ;    //  general speed controlled by 4th axis
+    		double XSpeed = (joy1.getRawAxis(3) + 2) ;    // (why * 1.5?) ---> ***NEEDS TESTING
+    		
+    		if(turnSpeed > 2){
+    			//custom1.set(true);
+    		}
+    		else{
+    			//custom1.set(false);
+    		}
+    		
+    		//if the robot is carrying a stack of totes, move with gradual acceleration
+    		if(!isStacked){
+    			tempYMag = joy1.getY(); 
+    			tempXMag = joy1.getX();
+    			tempTwist = joy1.getTwist();
+    		}
+    		else{
+    			if(tempYMag < joy1.getY()){tempYMag = tempYMag + 0.0005;}
+    			else{tempYMag = tempYMag - 0.0005 ;}
+    			
+    			if(tempXMag < joy1.getX()){tempXMag = tempXMag + 0.0005;}
+    			else{tempXMag = tempXMag - 0.0005;}
+    			
+    			if(tempTwist < joy1.getTwist()){tempTwist = tempTwist + 0.0005;}
+    			else{tempTwist = tempTwist - 0.0005;}
+    		}
+
+    		if(joy1.getRawButton(1)){tempXMag  = 0;}//if trigger, no strafe
+    		if(joy1.getRawButton(2)){tempTwist = 0;}//if thumb button, no turn
+    		if(joy1.getRawButton(3)){tempYMag  = 0;}//if button 3, no forward
+    		if(joy1.getRawButton(5)){isStacked = false;} //if button 5, its safe to accelerate normally 
+    		if(joy1.getRawButton(6)){isStacked = true;}//if Button 6, we are holding totes and acceleration is dangerous
+    		if(joy1.getRawButton(7)){noodling  = 0;} //turns off the noodle intake
+    		if(joy1.getRawButton(8)){noodling  = 1;} //turns on the noodle intake
+    		if(joy1.getRawButton(9)){noodling  = 2;} //turns on the noodle output
+    		
+    		if(joy2.getRawButton(11)){desiredLvl = 0;}//button moves lift to level 0 (~8 inches)
+    		if(joy2.getRawButton(9)){desiredLvl  = 1;}//button to level 1(~1ft 2in)
+    		if(joy2.getRawButton(7)){desiredLvl  = 2;}//button to level 2(~2ft 2in)
+    		if(joy2.getRawButton(8)){desiredLvl  = 3;}//button to level 3(~3ft 2in)
+    		if(joy2.getRawButton(10)){desiredLvl = 4;}//button to level 4(~4ft 2in)
+    		
+    		if(joy2.getRawButton(3)){flipping = true;}//flip tote
+    		if(joy2.getRawButton(1)){jeff.set(true);} //fire solenoid
+    		if(joy2.getRawButton(2)){jeff.set(false);} // retract solenoid
+    		
+    		//noodle intake motor setting
+    		if(noodling == 0){noodleMotor1.set(1.0);}
+    		if(noodling == 1){noodleMotor1.set(0.0);}
+    		if(noodling == 2){noodleMotor1.set(-1.0);}
+    		if(noodling == 0){noodleMotor2.set(1.0);}
+    		if(noodling == 1){noodleMotor2.set(0.0);}
+    		if(noodling == 2){noodleMotor2.set(-1.0);}
+    		
+    		if(flipping){ //flipping button
+    			if(flipClock){
+    				flipMotor.set(.25);
+    				flipClock = false;
+    			}
+    			else{
+    				flipMotor.set(-.25);
+    				flipClock = true;
+    			}
+    			//flipEncode.get()) > 720
+    			if(joy2.getRawButton(12)){ //180 degrees
+    				flipping = false;
+    				flipEncode.reset();
+    			}
+    		}
+    		
+    		rb.mecanumDrive_Cartesian( tempYMag/YSpeed, -tempTwist/turnSpeed, tempXMag/XSpeed, -gyro.getAngle());
+    		
+    		//basic elevator control
+    		liftMotor1.set(.5* joy2.getY());
+    		liftMotor2.set(-.5* joy2.getY());
+    		
+    		//smartDash live info display
+    		SmartDashboard.putBoolean("Flipping?", flipping);
+    		SmartDashboard.putNumber("Current Lift Level: ", liftLvl);
+    		SmartDashboard.putNumber("Desired Lift Level: ", desiredLvl);
+    		SmartDashboard.putBoolean("Carrying Stacks?", isStacked);
+    		SmartDashboard.putNumber("Joystick Y: ", tempYMag);
+    		SmartDashboard.putNumber("Joystick X: ", tempXMag);
+    		SmartDashboard.putNumber("Joystick Twist", tempTwist);
+    		SmartDashboard.putNumber("Speed Constant: ", joy1.getRawAxis(3));
+    	}
+    }
+
+    /**
+     * This function is called when the disabled button is hit.
+     * You can use it to reset subsystems before shutting down.
+     */
+    public void disabledInit(){
+    	
+    }
+
+    /**
+     * This function is called periodically during operator control
+     */
+    public void teleopPeriodic() {
+        Scheduler.getInstance().run();
+    }
+    
+    /**
+     * This function is called periodically during test mode
+     */
+    public void testPeriodic() {
+        LiveWindow.run();
+    }
+}
